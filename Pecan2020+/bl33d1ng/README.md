@@ -229,9 +229,4 @@ root@kali:~/Desktop/stuff# r2 -w bl33d1ng
 |           0x0000140d      c9             leave
 \           0x0000140e      c3             ret
 ```
-
-
-
-
-
-
+                                                                                                                                                                                                                                                                                                                                                                     
