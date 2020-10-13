@@ -75,8 +75,7 @@ root@kali:~/Desktop/stuff# r2 -w bl33d1ng
 |           0x00001185      c745f8010000.  mov dword [var_8h], 1       ; bleeding.c:14  int leak =  1;
 |           0x0000118c      bf02000000     mov edi, 2                  ; bleeding.c:16  sleep(2); ; int s
 |           0x00001191      e8aafeffff     call sym.imp.sleep          ; int sleep(int s)
-|       ,=< 0x00001196      eb2c           jmp 0x11c4                  ; bleeding.c:19  while (leak == 1)
-|       |   ; CODE XREF from main @ 0x11c8
+|       ,=< 0x00001196      eb0x11c8
 |      .--> 0x00001198      488d3d920e00.  lea rdi, qword str.too_late ; bleeding.c:21   printf("too late!\n"); ; 0x2031 ; "too late!" ; const char *s
 |      :|   0x0000119f      e88cfeffff     call sym.imp.puts           ; int puts(const char *s)
 |      :|   0x000011a4      bf01000000     mov edi, 1                  ; bleeding.c:22   sleep(1); ; int s
@@ -229,4 +228,13 @@ root@kali:~/Desktop/stuff# r2 -w bl33d1ng
 |           0x0000140d      c9             leave
 \           0x0000140e      c3             ret
 ```
-                                                                                                                                                                                                                                                                                                                                                                     
+Looking at the binary we can see at this instruction/address ```0x00001196  eb2c   jmp 0x11c4 ; bleeding.c:19  while (leak == 1)```
+When the binary jumps to address 11c4, the following instructions are executed:
+```
+0x000011c4      837df801       cmp dword [var_8h], 1       ; bleeding.c:19  while (leak == 1)
+0x000011c8      74ce           je 0x1198
+```
+
+
+  
+                                                                                                                                                                            
