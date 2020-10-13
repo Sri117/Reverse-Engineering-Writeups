@@ -234,7 +234,44 @@ When the binary jumps to address 11c4, the following instructions are executed:
 0x000011c4      837df801       cmp dword [var_8h], 1       ; bleeding.c:19  while (leak == 1)
 0x000011c8      74ce           je 0x1198
 ```
+The program checks to see if ```var_8h``` is equal to 1, and if it is, then the binary jumps to address ```0x1198```, the following code is then executed:
+```
+0x00001198      488d3d920e00.  lea rdi, qword str.too_late ; bleeding.c:21   printf("too late!\n"); ; 0x2031 ; "too late!" ; const char *s  
+0x0000119f      e88cfeffff     call sym.imp.puts           ; int puts(const char *s)
+0x000011a4      bf01000000     mov edi, 1                  ; bleeding.c:22   sleep(1); ; int s
+0x000011a9      e892feffff     call sym.imp.sleep          ; int sleep(int s)
+0x000011ae      488d3d860e00.  lea rdi, qword str.i_died_: ; bleeding.c:23   printf("i died :( \n"); ; 0x203b ; "i died :( " ; const char *s
+0x000011b5      e876feffff     call sym.imp.puts           ; int puts(const char *s)
+0x000011ba      bf01000000     mov edi, 1                  ; bleeding.c:24   sleep(1); ; int s
+0x000011bf      e87cfeffff     call sym.imp.sleep          ; int sleep(int s)
+```
+This code prints out the following text:
+```
+    too late!
+    i died :(
+```
+After printing out these statements, the program checks if the ```var_8h``` variable is equal to 1 and so on.
+
+## BSA Step 4 
+**Patching a Statement**
+
+From this analysis, we can determine that patching an instruction will prevent this loop from executing in the first place.
+
+If we patch this ```0x000011c8  74ce je 0x1198``` instruction to a ```jmp``` instruction, we can avoid the loop entirely. The question is where to provide the address for the jmp instruction to go to. 
+
+Scrolling down one instruction from the original ```je 0x1198``` instruction, we can see the binary executes the following instructions if ```var_8h``` is not equal to 1:
+```
+0x000011ca      837df801       cmp dword [var_8h], 1       ; bleeding.c:28  if (leak != 1)
+0x000011ce      0f8434020000   je 0x1408
+0x000011d4      488d3d6b0e00.  lea rdi, qword str.thank_you ; bleeding.c:30   printf("thank you\n"); ; 0x2046 ; "thank you" ; const char *s
+0x000011db      e850feffff     call sym.imp.puts           ; int puts(const char *s)
+0x000011e0      bf01000000     mov edi, 1                  ; bleeding.c:31   sleep(1); ; int s
+0x000011e5      e856feffff     call sym.imp.sleep          ; int sleep(int s)
+0x000011ea      488d3d5f0e00.  lea rdi, qword str.you_patched_me ; bleeding.c:32   printf("you patched me\n"); ; 0x2050 ; "you patched me" ; const char *s
+```
+
+
 
 
   
-                                                                                                                                                                            
+                                                                                                                                                                       
