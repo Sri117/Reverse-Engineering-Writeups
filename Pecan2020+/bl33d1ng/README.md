@@ -4,10 +4,17 @@
 
 ![Screen Shot 2020-10-13 at 11 07 41 am](https://user-images.githubusercontent.com/45506405/95810766-55999d80-0d44-11eb-83b0-91982b4d0973.png)
 
-## Solution
+## Basic Static Analysis (BSA) - Step 1
 **Downloading the file and running the "file" command shows that it is a linux executable**
 
 ![Screen Shot 2020-10-13 at 11 16 21 am](https://user-images.githubusercontent.com/45506405/95811304-8f1ed880-0d45-11eb-9f5d-3368e80e8a52.png)
+
+
+## BSA - Step 2
+**Executing the binary gives us the following output**
+
+
+
 
 
 
