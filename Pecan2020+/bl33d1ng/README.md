@@ -295,5 +295,5 @@ Execute the program once more:
 
 ![bl33d1ng](https://user-images.githubusercontent.com/45506405/95940359-b2fb2080-0e10-11eb-9238-fb6a484b09c3.png)
 
-**We have patched the program and were able to reverse engineer it to give us the flag, as shown by the md5 flag**
+**We have patched the program and were able to reverse engineer it to give us the flag, as shown by the md5 flag.**
                                                                                                                                                                   
