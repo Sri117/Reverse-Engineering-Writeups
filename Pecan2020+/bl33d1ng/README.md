@@ -278,8 +278,9 @@ To patch a statement, the following commands will be run in radare2 respectively
 ```p``` - to print out the diassembly
 
 We will scroll down to the address ```0x00001196``` which should appear as below:
+![bl33d1ng](https://user-images.githubusercontent.com/45506405/95939407-99f17000-0e0e-11eb-970a-d517dc56edb3.png)
 
-
+We will now edit this instruction by pressing ```shift+a```, which would result in the following prompt:
 
 
 
