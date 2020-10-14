@@ -284,6 +284,13 @@ We will now edit this instruction by pressing ```shift+a```, which would result 
 ![bl33d1ng](https://user-images.githubusercontent.com/45506405/95939958-d8d3f580-0e0f-11eb-938c-4e30a34a2582.png)
 
 We will edit the instruction to ```jmp 0x11d4``` which will result in the following:
+![image](https://user-images.githubusercontent.com/45506405/95940094-2f413400-0e10-11eb-9362-affb0b3be384.png)
+
+Next, to save the changes we have made, press enter. Radare2 will ask you to confirm your changes. Enter 'Y'. To test this patch, exit Radare 2. 
+
+## BSA Step 5
+**Testing new control path**
+Execute the program once more:
 
 
 
