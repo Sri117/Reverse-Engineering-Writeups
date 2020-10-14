@@ -292,12 +292,7 @@ Next, to save the changes we have made, press enter. Radare2 will ask you to con
 **Testing new control path**
 
 Execute the program once more:
+
 ![bl33d1ng](https://user-images.githubusercontent.com/45506405/95940359-b2fb2080-0e10-11eb-9238-fb6a484b09c3.png)
 
-
-
-
-
-
-  
-                                                                                                                                                                       
+                                                                                                                                                                  
