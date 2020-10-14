@@ -277,7 +277,7 @@ To patch a statement, the following commands will be run in radare2 respectively
 ```V``` - to go to visual mode
 ```p``` - to print out the diassembly
 
-we will scroll down to the address ```0x00001196``` which should appear as below:
+We will scroll down to the address ```0x00001196``` which should appear as below:
 
 
 
