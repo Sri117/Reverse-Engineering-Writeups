@@ -271,7 +271,7 @@ Scrolling down one instruction from the original ```je 0x1198``` instruction, we
 ```
 This jump will lead to an return 0 statement and will cause the program to "return 0" and exit. However if we can avoid this jump, then the program flow will continue and the the bytes stored in variable ```local_9h``` will be xored with the long list of keys. This should reveal the secret flag. 
 
-If we patch the original statement at address 0x00001196 ```jmp 0x11c4``` to ```jmp 0x000011d4```, then we can jump directly to the decryption code. 
+If we patch the original statement at address 0x00001196 ```jmp 0x11c4``` to ```jmp 0x11d4```, then we can jump directly to the decryption code. 
 
 To patch a statement, the following commands will be run in radare2 respectively, and will be run once:
 ```V``` - to go to visual mode
@@ -281,7 +281,9 @@ We will scroll down to the address ```0x00001196``` which should appear as below
 ![bl33d1ng](https://user-images.githubusercontent.com/45506405/95939407-99f17000-0e0e-11eb-970a-d517dc56edb3.png)
 
 We will now edit this instruction by pressing ```shift+a```, which would result in the following prompt:
+![bl33d1ng](https://user-images.githubusercontent.com/45506405/95939958-d8d3f580-0e0f-11eb-938c-4e30a34a2582.png)
 
+We will edit the instruction to ```jmp 0x11d4``` which will result in the following:
 
 
 
