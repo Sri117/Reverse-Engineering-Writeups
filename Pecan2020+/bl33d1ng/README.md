@@ -75,7 +75,7 @@ root@kali:~/Desktop/stuff# r2 -w bl33d1ng
 |           0x00001185      c745f8010000.  mov dword [var_8h], 1       ; bleeding.c:14  int leak =  1;
 |           0x0000118c      bf02000000     mov edi, 2                  ; bleeding.c:16  sleep(2); ; int s
 |           0x00001191      e8aafeffff     call sym.imp.sleep          ; int sleep(int s)
-|       ,=< 0x00001196      eb0x11c8
+|       ,=< 0x00001196      eb2c           jmp 0x11c4        
 |      .--> 0x00001198      488d3d920e00.  lea rdi, qword str.too_late ; bleeding.c:21   printf("too late!\n"); ; 0x2031 ; "too late!" ; const char *s
 |      :|   0x0000119f      e88cfeffff     call sym.imp.puts           ; int puts(const char *s)
 |      :|   0x000011a4      bf01000000     mov edi, 1                  ; bleeding.c:22   sleep(1); ; int s
@@ -86,7 +86,7 @@ root@kali:~/Desktop/stuff# r2 -w bl33d1ng
 |      :|   0x000011bf      e87cfeffff     call sym.imp.sleep          ; int sleep(int s)
 |      :|   ; CODE XREF from main @ 0x1196
 |      :`-> 0x000011c4      837df801       cmp dword [var_8h], 1       ; bleeding.c:19  while (leak == 1)
-|      `==< 0x000011c8      74ce           je 0x1198
+|      `==< 0x000011c8      74ce           je 0x1198                   
 |           0x000011ca      837df801       cmp dword [var_8h], 1       ; bleeding.c:28  if (leak != 1)
 |       ,=< 0x000011ce      0f8434020000   je 0x1408
 |       |   0x000011d4      488d3d6b0e00.  lea rdi, qword str.thank_you ; bleeding.c:30   printf("thank you\n"); ; 0x2046 ; "thank you" ; const char *s
@@ -269,6 +269,20 @@ Scrolling down one instruction from the original ```je 0x1198``` instruction, we
 0x000011e5      e856feffff     call sym.imp.sleep          ; int sleep(int s)
 0x000011ea      488d3d5f0e00.  lea rdi, qword str.you_patched_me ; bleeding.c:32   printf("you patched me\n"); ; 0x2050 ; "you patched me" ; const char *s
 ```
+This jump will lead to an return 0 statement and will cause the program to "return 0" and exit. However if we can avoid this jump, then the program flow will continue and the the bytes stored in variable ```local_9h``` will be xored with the long list of keys. This should reveal the secret flag. 
+
+If we patch the original statement at address 0x00001196 ```jmp 0x11c4``` to ```jmp 0x000011d4```, then we can jump directly to the decryption code. 
+
+To patch a statement, the following commands will be run in radare2 respectively, and will be run once:
+```V``` - to go to visual mode
+```p``` - to print out the diassembly
+
+we will scroll down to the address ```0x00001196``` which should appear as below:
+
+
+
+
+
 
 
 
