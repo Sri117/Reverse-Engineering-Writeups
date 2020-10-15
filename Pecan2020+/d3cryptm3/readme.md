@@ -111,8 +111,7 @@ sdevalpa@LAPTOP-LAFUS4CN:~$ r2 -w d3cryptm3
 ```
 Looking at the binary, we can see that, after the program prints out ```You must a pre-approved token: ``` at address ```0x000011cc```, the program then calls ```sub.Checking_each_byte..._29a``` at address ```0x0000128e```. The instructions after "You must a pre-approved token" are irrelevant. 
 
-We can see that after the program prompts the user for input, it "moves" a hex value of ```0x64``` (100 bytes) into the esi register. This gets passed into the ```fgets()``` function. This is presumably the size of the buffer that has been built into the function. 
-
+We can see that after the program prompts the user for input, the rsi and rdi registers are passed into this ```sub.Checking_each_byte..._29a`` function. 
 
 ## BSA Step 5
 **Performing further static analysis**
@@ -191,4 +190,17 @@ It has become clear that the user input is being passed into the ```sub.Checking
 |           0x0000137c      488d3d770d00.  lea rdi, qword str.Please_try_again... ; 0x20fa ; "Please try again..." ; const char * s
 |           0x00001383      e8a8fcffff     call sym.imp.puts           ; int puts(const char *s)
 
+```
+By analysing this function, we can understand that the program is comparing two strings at address ```0x00001307``` and if the comparison is not equal to zero, the program prints out the following text:
+```
+    Your token could not be verified
+    Please try again...
+    Goodbye...
+```
+The program proceeds to exit. 
+
+However, if the comparison is succesful, the program will print out the following:
+```
+    Your token has been verified
+    Here is the decrypted text %s
 ```
