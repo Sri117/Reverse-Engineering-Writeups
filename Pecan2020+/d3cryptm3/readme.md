@@ -214,7 +214,18 @@ Looking at the function we can see that after the program prints out ```Checking
 0x000012f7      76c6           jbe 0x12bf
 ```
 
-Once this variable equals 7, the program compares two strings at address ```0x00001307``` and if the comparison is not equal to zero, the program prints out the following text:
+Once this variable equals 7, the program compares two strings at address ```0x00001307```:
+```
+ 0x7f842700f2f9      488b55e0       mov rdx, qword [local_20h]
+ 0x7f842700f2fd      488b45e8       mov rax, qword [local_18h]
+ 0x7f842700f301      4889d6         mov rsi, rdx            ; const char * s2
+ 0x7f842700f304      4889c7         mov rdi, rax            ; const char * s1
+ 0x7f842700f307      e864fdffff     call sym.imp.strcmp     ; int strcmp(const char *s1, const char *s2)
+ 0x7f842700f30c      85c0           test eax, eax
+```
+
+If the comparison is not equal to zero, the program prints out the following text:
+
 ```
     Your token could not be verified
     Please try again...
@@ -244,3 +255,10 @@ To set the breakpoint, the following command was executed:
 db 0x7f842700f30c
 ```
 Next, we need to execute the program, to do this, execute the following command: ```dc```. The program will start executing and you will see the following:
+
+![d3cryptm3](https://user-images.githubusercontent.com/45506405/96096997-09e12280-0f03-11eb-8507-60838281937c.png)
+
+Next, we need to view the values of the registers so we will execute the following command ```dr```:
+
+
+
