@@ -232,7 +232,7 @@ However, if the comparison is succesful, the program will print out the followin
 ```
 
 ## BSA Step 6
-**Perform further static analysis**
+**Perform advanced static analysis**
 
 Now that we now how the program works, we need to understand what's being compared at address ```0x00001307```. To do this, we'll need to enter debugging mode. 
 ```
