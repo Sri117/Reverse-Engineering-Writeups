@@ -192,7 +192,7 @@ It has become clear that the user input is being passed into the ```sub.Checking
 
 ```
 
-Looking at the function we can see that after the program prints out ```Checking each byte...```, the program jumps to address ```0x000012f1```, the program intiates a loop that repeats 8 times, with each loop xoring each byte with the following keys: ```0xad``` and ```0x5c```. At the end of the loop, the program increments the ```local_4h``` by one and compares it to 7. **Ultimately, this means that only the first 7 bytes of the user's input will be encrypted.**
+Looking at the function we can see that after the program prints out ```Checking each byte...```, the program jumps to address ```0x000012f1```, the program intiates a loop that repeats 8 times, with each loop xoring each byte (stored in ```local_5h```) with the following keys: ```0xad``` and ```0x5c```. At the end of the loop, the program increments the ```local_4h``` by one and compares it to 7. **Ultimately, this means that only the first 7 bytes of the user's input will be encrypted.**
 
 ```
 0x000012bf      8b45fc         mov eax, dword [local_4h]
