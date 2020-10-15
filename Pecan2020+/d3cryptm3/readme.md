@@ -111,5 +111,84 @@ sdevalpa@LAPTOP-LAFUS4CN:~$ r2 -w d3cryptm3
 ```
 Looking at the binary, we can see that, after the program prints out ```You must a pre-approved token: ``` at address ```0x000011cc```, the program then calls ```sub.Checking_each_byte..._29a``` at address ```0x0000128e```. The instructions after "You must a pre-approved token" are irrelevant. 
 
+We can see that after the program prompts the user for input, it "moves" a hex value of ```0x64``` (100 bytes) into the esi register. This gets passed into the ```fgets()``` function. This is presumably the size of the buffer that has been built into the function. 
 
 
+## BSA Step 5
+**Performing further static analysis**
+
+It has become clear that the user input is being passed into the ```sub.Checking_each_byte..._29a``` function so we need to figure out what this function is doing. To view the disassembly of this function, we will enter the following commands:
+
+```
+[0x00001195]> s sub.Checking_each_byte..._29a
+[0x0000129a]> pdf
+/ (fcn) sub.Checking_each_byte..._29a 270
+|   sub.Checking_each_byte..._29a ();
+|           ; var int local_20h @ rbp-0x20
+|           ; var int local_18h @ rbp-0x18
+|           ; var int local_6h @ rbp-0x6
+|           ; var int local_5h @ rbp-0x5
+|           ; var int local_4h @ rbp-0x4
+|              ; CALL XREF from 0x0000128e (main)
+|           0x0000129a      55             push rbp
+|           0x0000129b      4889e5         mov rbp, rsp
+|           0x0000129e      4883ec20       sub rsp, 0x20
+|           0x000012a2      48897de8       mov qword [local_18h], rdi
+|           0x000012a6      488975e0       mov qword [local_20h], rsi
+|           0x000012aa      488d3dcc0d00.  lea rdi, qword str.Checking_each_byte... ; 0x207d ; "Checking each byte..." ; const char * s
+|           0x000012b1      e87afdffff     call sym.imp.puts           ; int puts(const char *s)
+|           0x000012b6      c745fc000000.  mov dword [local_4h], 0
+|       ,=< 0x000012bd      eb32           jmp 0x12f1
+|       |      ; JMP XREF from 0x000012f7 (sub.Checking_each_byte..._29a)
+|      .--> 0x000012bf      8b45fc         mov eax, dword [local_4h]
+|      :|   0x000012c2      4863d0         movsxd rdx, eax
+|      :|   0x000012c5      488b45e8       mov rax, qword [local_18h]
+|      :|   0x000012c9      4801d0         add rax, rdx                ; '('
+|      :|   0x000012cc      0fb600         movzx eax, byte [rax]
+|      :|   0x000012cf      8845fb         mov byte [local_5h], al
+|      :|   0x000012d2      8075fbad       xor byte [local_5h], 0xad
+|      :|   0x000012d6      8075fb5c       xor byte [local_5h], 0x5c
+|      :|   0x000012da      8b45fc         mov eax, dword [local_4h]
+|      :|   0x000012dd      4863d0         movsxd rdx, eax
+|      :|   0x000012e0      488b45e8       mov rax, qword [local_18h]
+|      :|   0x000012e4      4801c2         add rdx, rax                ; '#'
+|      :|   0x000012e7      0fb645fb       movzx eax, byte [local_5h]
+|      :|   0x000012eb      8802           mov byte [rdx], al
+|      :|   0x000012ed      8345fc01       add dword [local_4h], 1
+|      :|      ; JMP XREF from 0x000012bd (sub.Checking_each_byte..._29a)
+|      :`-> 0x000012f1      8b45fc         mov eax, dword [local_4h]
+|      :    0x000012f4      83f807         cmp eax, 7
+|      `==< 0x000012f7      76c6           jbe 0x12bf
+|           0x000012f9      488b55e0       mov rdx, qword [local_20h]
+|           0x000012fd      488b45e8       mov rax, qword [local_18h]
+|           0x00001301      4889d6         mov rsi, rdx                ; const char * s2
+|           0x00001304      4889c7         mov rdi, rax                ; const char * s1
+|           0x00001307      e864fdffff     call sym.imp.strcmp         ; int strcmp(const char *s1, const char *s2)
+|           0x0000130c      85c0           test eax, eax
+|       ,=< 0x0000130e      754c           jne 0x135c
+|       |   0x00001310      bf01000000     mov edi, 1                  ; int s
+|       |   0x00001315      e876fdffff     call sym.imp.sleep          ; int sleep(int s)
+|       |   0x0000131a      488d3d720d00.  lea rdi, qword str.Your_token_has_been_verified ; 0x2093 ; "Your token has been verified!" ; const char * s
+|       |   0x00001321      e80afdffff     call sym.imp.puts           ; int puts(const char *s)
+|       |   0x00001326      bf01000000     mov edi, 1                  ; int s
+|       |   0x0000132b      e860fdffff     call sym.imp.sleep          ; int sleep(int s)
+|       |   0x00001330      488d45fa       lea rax, qword [local_6h]
+|       |   0x00001334      4889c6         mov rsi, rax
+|       |   0x00001337      488d3d7a0d00.  lea rdi, qword str.Here_is_the_decrypted_text___s ; 0x20b8 ; "Here is the decrypted text! %s\n" ; const char * format
+|       |   0x0000133e      b800000000     mov eax, 0
+|       |   0x00001343      e808fdffff     call sym.imp.printf         ; int printf(const char *format)
+|       |   0x00001348      bf01000000     mov edi, 1                  ; int s
+|       |   0x0000134d      e83efdffff     call sym.imp.sleep          ; int sleep(int s)
+|       |   0x00001352      bf00000000     mov edi, 0                  ; int status
+|       |   0x00001357      e824fdffff     call sym.imp.exit           ; void exit(int status)
+|       |      ; JMP XREF from 0x0000130e (sub.Checking_each_byte..._29a)
+|       `-> 0x0000135c      bf01000000     mov edi, 1                  ; int s
+|           0x00001361      e82afdffff     call sym.imp.sleep          ; int sleep(int s)
+|           0x00001366      488d3d6b0d00.  lea rdi, qword str.Your_token_could_not_be_verified ; 0x20d8 ; "Your token could not be verified!" ; const char * s
+|           0x0000136d      e8befcffff     call sym.imp.puts           ; int puts(const char *s)
+|           0x00001372      bf01000000     mov edi, 1                  ; int s
+|           0x00001377      e814fdffff     call sym.imp.sleep          ; int sleep(int s)
+|           0x0000137c      488d3d770d00.  lea rdi, qword str.Please_try_again... ; 0x20fa ; "Please try again..." ; const char * s
+|           0x00001383      e8a8fcffff     call sym.imp.puts           ; int puts(const char *s)
+
+```
