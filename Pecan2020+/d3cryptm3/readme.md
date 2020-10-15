@@ -248,6 +248,8 @@ db 0x7f842700f30c
 ```
 Next, we need to execute the program, to do this, execute the following command: ```dc```. The program will start executing and you will see the following:
 
+*I've entered "somerandomgarbageinput" for the user input but this can be anything.*
+
 ![d3cryptm3](https://user-images.githubusercontent.com/45506405/96096997-09e12280-0f03-11eb-8507-60838281937c.png)
 
 Next, we need to view the values of the registers so we will execute the following command ```dr```:
@@ -277,6 +279,18 @@ To print out the two values stored at these memory locations, we will execute th
 ```
 
 This gives us the following output:
+
+![d3cryptm3](https://user-images.githubusercontent.com/45506405/96099082-6e9d7c80-0f05-11eb-8673-6a7542827b4c.png)
+
+We can see that the first memory location is storing the encrypted text (**its 32 characters**) and also appears to be in a **hexadecimal format**.
+
+The second memory location is storing our user input.
+**Note: Only the first 8 characters of our user input has been encrypted (s o m e r a n d o) and the rest of the characters are still in plaintext. This means that even if we had the right plaintext, the program wouldn't encrypt all charaters thus giving us an error message**
+
+However, we now posess the encrypted flag. We also know that the program was encrpyting the user input by using the keys ```ad``` and ```5c```. This means that we can decrypt the plain text :) using a tool such as **CyberChef**:
+
+
+
 
 
 
