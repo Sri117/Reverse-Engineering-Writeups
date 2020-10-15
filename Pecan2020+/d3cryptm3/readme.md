@@ -191,7 +191,33 @@ It has become clear that the user input is being passed into the ```sub.Checking
 |           0x00001383      e8a8fcffff     call sym.imp.puts           ; int puts(const char *s)
 
 ```
-By analysing this function, we can understand that the program is comparing two strings at address ```0x00001307``` and if the comparison is not equal to zero, the program prints out the following text:
+
+Looking at the function we can see that after the program prints out ```Checking each byte...```, the program jumps to address ```0x000012f1```, the program intiates a loop that repeats 8 times, with each loop xoring each byte with the following keys: ```0xad``` and ```0x5c```. At the end of the loop, the program increments the ```local_4h``` by one and compares it to 7. **Ultimately, this means that only the first 7 bytes of the user's input will be encrypted.**
+
+```
+0x000012bf      8b45fc         mov eax, dword [local_4h]
+0x000012c2      4863d0         movsxd rdx, eax
+0x000012c5      488b45e8       mov rax, qword [local_18h]
+0x000012c9      4801d0         add rax, rdx                ; '('
+0x000012cc      0fb600         movzx eax, byte [rax]
+0x000012cf      8845fb         mov byte [local_5h], al
+0x000012d2      8075fbad       xor byte [local_5h], 0xad
+0x000012d6      8075fb5c       xor byte [local_5h], 0x5c
+0x000012da      8b45fc         mov eax, dword [local_4h]
+0x000012dd      4863d0         movsxd rdx, eax
+0x000012e0      488b45e8       mov rax, qword [local_18h]
+0x000012e4      4801c2         add rdx, rax                ; '#'
+0x000012e7      0fb645fb       movzx eax, byte [local_5h]
+0x000012eb      8802           mov byte [rdx], al
+0x000012ed      8345fc01       add dword [local_4h], 1
+0x000012f1      8b45fc         mov eax, dword [local_4h]
+0x000012f7      76c6           jbe 0x12bf
+```
+
+
+
+
+Once this variable equals 7, the program compares two strings at address ```0x00001307``` and if the comparison is not equal to zero, the program prints out the following text:
 ```
     Your token could not be verified
     Please try again...
@@ -204,3 +230,5 @@ However, if the comparison is succesful, the program will print out the followin
     Your token has been verified
     Here is the decrypted text %s
 ```
+
+
