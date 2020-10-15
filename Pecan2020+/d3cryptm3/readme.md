@@ -291,7 +291,7 @@ However, we now posess the encrypted flag. We also know that the program was enc
 
 ![d3cryptm3](https://user-images.githubusercontent.com/45506405/96100512-08b1f480-0f07-11eb-99d4-06e6ec9bb6c6.png)
 
-**We can now see the decrypted flag, which is in an md5 format!
+**We can now see the decrypted flag, which is in an md5 format! (31dd46cccee0d5132f9cc2eafb76eb94)
 
 
 
