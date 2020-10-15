@@ -214,9 +214,6 @@ Looking at the function we can see that after the program prints out ```Checking
 0x000012f7      76c6           jbe 0x12bf
 ```
 
-
-
-
 Once this variable equals 7, the program compares two strings at address ```0x00001307``` and if the comparison is not equal to zero, the program prints out the following text:
 ```
     Your token could not be verified
@@ -231,4 +228,18 @@ However, if the comparison is succesful, the program will print out the followin
     Here is the decrypted text %s
 ```
 
+## BSA Step 6
+**Perform further static analysis**
+Now that we now how the program works, we need to understand what's being compared at address ```0x00001307```. To do this, we'll need to enter debugging mode. 
+```
+sdevalpa@LAPTOP-LAFUS4CN:~$ r2 -d d3cryptm3
+```
+The same commands from above were executed (including the seek into the ```Checking_each_byte...``` function. 
 
+Next, a breakpoint needs to be set at an address so that we can view the value of the registers. We will set the breakpoint at address ```0x7f842700f30c```. This instruction is the instruction after the ```sym.imp.strcmp``` function is called so we know that the registers have been populated. 
+
+To set the breakpoint, the following command was executed:
+```
+db 0x7f842700f30c
+```
+Next, we need to execute the program, to do this, execute the following command: ```dc```. The program will start executing and you will see the following:
