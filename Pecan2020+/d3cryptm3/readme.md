@@ -8,5 +8,6 @@
 
 **We can also see that the executable has been stripped**
 
-
+## BSA - Step 2
+**Executing the binary gives us the following output**
 
