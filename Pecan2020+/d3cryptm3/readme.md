@@ -285,7 +285,7 @@ This gives us the following output:
 We can see that the first memory location is storing the encrypted text (**its 32 characters**) and also appears to be in a **hexadecimal format**.
 
 The second memory location is storing our user input.
-**Note: Only the first 8 characters of our user input has been encrypted (s o m e r a n d o) and the rest of the characters are still in plaintext. This means that even if we had the right plaintext, the program wouldn't encrypt all charaters thus giving us an error message**.
+**Note: Only the first 8 characters of our user input has been encrypted (s o m e r a n d) and the rest of the characters are still in plaintext. This means that even if we had the right plaintext, the program wouldn't encrypt all charaters thus giving us an error message**.
 
 However, we now posess the encrypted flag. We also know that the program was encrpyting the user input by using the keys ```ad``` and ```5c```. This means that we can decrypt the plain text :) using a tool such as **CyberChef**:
 
