@@ -109,4 +109,7 @@ sdevalpa@LAPTOP-LAFUS4CN:~$ r2 -w d3cryptm3
 |           0x00001298      c9             leave
 \           0x00001299      c3             ret
 ```
-Looking at the binary, we can see that, after the program prints out ```Your must a pre-approved token: ``` at address ```0x000011cc```, the program then calls ```sub.Checking_each_byte..._29a``` at address ```0x0000128e```.
+Looking at the binary, we can see that, after the program prints out ```You must a pre-approved token: ``` at address ```0x000011cc```, the program then calls ```sub.Checking_each_byte..._29a``` at address ```0x0000128e```. The instructions after "You must a pre-approved token" are irrelevant. 
+
+
+
