@@ -215,14 +215,6 @@ Looking at the function we can see that after the program prints out ```Checking
 ```
 
 Once this variable equals 7, the program compares two strings at address ```0x00001307```:
-```
- 0x7f842700f2f9      488b55e0       mov rdx, qword [local_20h]
- 0x7f842700f2fd      488b45e8       mov rax, qword [local_18h]
- 0x7f842700f301      4889d6         mov rsi, rdx            ; const char * s2
- 0x7f842700f304      4889c7         mov rdi, rax            ; const char * s1
- 0x7f842700f307      e864fdffff     call sym.imp.strcmp     ; int strcmp(const char *s1, const char *s2)
- 0x7f842700f30c      85c0           test eax, eax
-```
 
 If the comparison is not equal to zero, the program prints out the following text:
 
@@ -259,6 +251,33 @@ Next, we need to execute the program, to do this, execute the following command:
 ![d3cryptm3](https://user-images.githubusercontent.com/45506405/96096997-09e12280-0f03-11eb-8507-60838281937c.png)
 
 Next, we need to view the values of the registers so we will execute the following command ```dr```:
+
+![d3cryptm3](https://user-images.githubusercontent.com/45506405/96097677-d5ba3180-0f03-11eb-896b-970df37d78f0.png)
+
+We know that after encrypting the user input, the following code is executed:
+```
+0x7f842700f2f9      488b55e0       mov rdx, qword [local_20h]
+0x7f842700f2fd      488b45e8       mov rax, qword [local_18h]
+0x7f842700f301      4889d6         mov rsi, rdx            ; const char * s2
+0x7f842700f304      4889c7         mov rdi, rax            ; const char * s1
+0x7f842700f307      e864fdffff     call sym.imp.strcmp     ; int strcmp(const char *s1, const char *s2)
+0x7f842700f30c      85c0           test eax, eax
+```
+
+If we print out the values of ```rsi``` and ```rdi``` then we can find out whats being compared. From the output that ```dr``` gave us, we can see the memory locations of these two registers. 
+```
+    rsi = 0x7fffc36d4a90
+    rdi = 0x7fffc36d4ac0
+```
+
+To print out the two values stored at these memory locations, we will execute the following command ```ps``` (print string):
+```
+    ps @ 0x7fffc36d4a90
+    ps @ 0x7fffc36d4ac0
+```
+
+This gives us the following output:
+
 
 
 
